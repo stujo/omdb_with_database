@@ -1,9 +1,15 @@
 <!doctype html>
 <html>
 <head>
-  <title>Your Title Here</title>
+  <title>Movies</title>
 </head>
 <body>
+<form action="/" method="get">
+  <label for="q">Search</label>
+  <input type="text" name="q" value="<%= @q %>" placeholder="Search Term"/>
+  <input type="submit"/>
+</form>
+<hr/>
       <%= yield  %>
 </body>
 </html>
