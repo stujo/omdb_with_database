@@ -7,8 +7,9 @@ class MovieDb
   def search(search_term)
     if search_term.length > 0
       dbexec do |connection|
-        connection.exec_params('select id, title, year from movies where title like $1', ['%' + search_term + '%'])
-      end
+#        connection.exec_params('select id, title, year from movies where title like $1', ['%' + search_term + '%'])
+        connection.exec_params('SELECT id, title, year FROM movies WHERE to_tsvector(title || \' \' || plot) @@ to_tsquery($1)', ['%' + search_term + '%'])
+     end
     else
       nil
     end
@@ -28,13 +29,7 @@ class MovieDb
       connection.exec_params('select id, title, year, plot from movies where title = $1', [title])
     end
 
-    s = movie.result_status
-
-    ntuples = movie.ntuples
-
-    if ntuples > 0
-
-    else
+    if movie.ntuples == 0
       dbexec do |connection|
         connection.exec_params('insert into movies (title, year, plot) VALUES ($1,$2,$3)', [title, year.to_i, plot])
       end

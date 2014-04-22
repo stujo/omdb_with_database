@@ -1,6 +1,5 @@
 
 <% @movies.each do |movie| %>
-<% p movie %>
 <li><a href="/movie/<%= movie['id'] %>"><%= movie['title'] %> (<%= movie['year'] %>)</a></li>
 <% end  %>
 
